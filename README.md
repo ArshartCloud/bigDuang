@@ -9,17 +9,17 @@ A course project for sysu_software system analysis and design.
 
 ####文件结构
 这个我瞎写的不用太认真看
-bigDuang/
-├── bin/                         可执行二进制文件目录，shell脚本在编译前删除此目录并重新创建此目录，故没有此目录不会影响脚本运行
-├── build/                       构建目录，shell脚本在编译前删除此目录并重新创建此目录，故没有此目录不会影响脚本运行
-├── future_net/                  代码目录
-│     ├── lib/
-│     │     ├── lib_io.h         读写文件的头文件
-│     │     ├── lib_record.h     将输出结果记录到缓冲区的头文件
-│     │     └── lib_time.h       打印时间的头文件
-│     ├── CMakeLists.txt         cmake
-│     ├── future_net.cpp         main函数源文件
-│     ├── route.cpp              你要写代码的源文件
-│     └── route.h                你要写代码的头文件
-├── batch.sh                     编译、链接、打包批处理脚本
-└── README.md                   你正在看的文件 -_-" 这不用介绍了吧
+bigDuang/                      
+├── data/     存放数据               
+│     ├── train.csv        训练集数据          
+│     ├── test.csv         测试集数据           
+│     └── result.csv       预测结果                  
+|              
+├── io.h                   读写文件、数据转化，可以在这里设置文件处理的格式        
+├── io.cpp            
+└── lrgd.h                 线性回归+梯度下降模型 类          
+└── lrgd.cpp                                      
+└── main.cpp               程序入口，可以设置学习速率、迭代次数等       
+└── Makefile               生成可执行文件  main           
+└── readme.txt             你正在看的文件         
+└── debug.txt              执行时，你可以通过重定向将一些debug信息写在这里   
