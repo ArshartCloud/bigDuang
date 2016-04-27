@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.1.1">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>44</x>
+      <y>275</y>
+      <w>110</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Customer
+--
+userName
+password
+telephone</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>253</x>
+      <y>264</y>
+      <w>121</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Reservation
+--
+ID
+dateTime
+state
+/total</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>429</x>
+      <y>264</y>
+      <w>110</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>Cinema
+--
+name
+address
+description
+city</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>671</x>
+      <y>275</y>
+      <w>110</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Screening
+--
+dateTime
+price</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>143</x>
+      <y>286</y>
+      <w>132</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+Reservs &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>517</x>
+      <y>55</y>
+      <w>165</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Movie
+--
+name
+type
+description
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>627</x>
+      <y>132</y>
+      <w>121</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=*
+ show v</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>528</x>
+      <y>297</y>
+      <w>165</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=*
+Has &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;130.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>473</x>
+      <y>132</y>
+      <w>132</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+Contains &gt;</panel_attributes>
+    <additional_attributes>10.0;120.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>352</y>
+      <w>440</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+m2=1
+Contains &gt;</panel_attributes>
+    <additional_attributes>360.0;120.0;360.0;160.0;10.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLObject</id>
+    <coordinates>
+      <x>660</x>
+      <y>429</y>
+      <w>110</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Seat
+--
+ID
+isUsed</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>704</x>
+      <y>330</y>
+      <w>88</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+Is-on ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>363</x>
+      <y>308</y>
+      <w>88</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+&lt; own</panel_attributes>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+</diagram>
