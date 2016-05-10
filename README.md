@@ -8,8 +8,8 @@ A course project for sysu_software system analysis and design.
 
 
 ####Developers
-张楚涵： 项目经理/前端开发 <br>
-曾艳红： 项目管理/前端开发 <br>
+张楚涵： 项目经理/前端开发   <br>  
+曾艳红： 项目管理/前端开发   [@1900zyh](https://github.com/1900zyh)<br>
 曾  栋： 技术经理/后台开发 <br>
-李炜铭： 技术经理/后台开发 <br>
+李炜铭： 技术经理/后台开发   [@Arshart Cloud](https://github.com/ArshartCloud)<br>
 曾  进： 需求分析/后台开发 <br>
