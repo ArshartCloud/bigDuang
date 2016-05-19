@@ -24,10 +24,18 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/action_sign_up"></activity>
+            android:label="@string/action_sign_up" />
         <activity
-            android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".InfoActivity"
+            android:label="@string/title_activity_info"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".OrderActivity"
+            android:label="@string/title_activity_order"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

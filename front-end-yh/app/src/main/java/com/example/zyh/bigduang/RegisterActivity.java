@@ -99,7 +99,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         finishSignup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                System.out.println("hhh");
                 startActivity(intent);
             }
         });
