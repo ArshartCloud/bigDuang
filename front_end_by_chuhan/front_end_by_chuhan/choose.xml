@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="10px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="金逸珠江国际影城（大学城店）"
+        android:id="@+id/textView3" />
+    <TextView
+        android:layout_width="160px"
+        android:layout_height="wrap_content"
+        android:id="@+id/grade"
+        android:text="8.9分"
+        android:textColor="#ea7c40"
+        android:paddingTop="10px"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginTop="10px"
+        android:background="#696969" />
+    <TextView
+        android:layout_width="550px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10px"
+        android:text="番禺区小谷围街贝岗村中二横路1号高高新天地商业广场B2B001铺"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginTop="10px"
+        android:background="#696969" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="171dp"
+        android:id="@+id/horizontalScrollView2"
+        android:layout_gravity="center_horizontal" >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></LinearLayout>
+    </HorizontalScrollView>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginTop="10px"
+        android:background="#696969" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="今天5月19日"
+            android:padding="10px"
+            android:id="@+id/textView4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="明天5月20日"
+            android:padding="10px"
+            android:id="@+id/textView5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="后天5月21日"
+            android:padding="10px"
+            android:id="@+id/textView6" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginTop="10px"
+        android:background="#696969" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView2"
+        android:layout_gravity="center_horizontal" />
+
+
+</LinearLayout>
