@@ -1,0 +1,60 @@
+CREATE TABLE customer (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name CHAR(60),
+    phone CHAR(60),
+    email CHAR(60),
+    password CHAR(60) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE movie (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name CHAR(60) NOT NULL,
+    type CHAR(60),
+    description TEXT,
+    image CHAR(60),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE cinema (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name CHAR(60) NOT NULL,
+    address TEXT,
+    description TEXT,
+    city CHAR(60),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE screen (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    width INT,
+    height INT,
+    cid INT UNSIGNED NOT NULL REFERENCES movie(cid),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE showtime (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    time DATETIME,
+    price FLOAT,
+    mid INT UNSIGNED NOT NULL REFERENCES movie(id),
+    sid INT UNSIGNED NOT NULL REFERENCES screen(id),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE seat (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    state ENUM('invalid', 'unreserved', 'reserved'),
+    sid INT UNSIGNED NOT NULL REFERENCES showtime(id),
+    PRIMARY KEY (id, sid)
+);
+
+CREATE TABLE reservation (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    time DATETIME,
+    state ENUM('waitingForImplement', 'waitingForPayment', 'paymentConfirm', 'Completed'),
+    price FLOAT,
+    sid INT UNSIGNED NOT NULL REFERENCES showtime(id),
+    seatid INT UNSIGNED NOT NULL REFERENCES seat(id),
+    PRIMARY KEY (id)
+);
