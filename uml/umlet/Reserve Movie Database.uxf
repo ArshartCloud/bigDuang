@@ -1,191 +1,145 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.1.1">
-  <zoom_level>10</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>270</y>
-      <w>170</w>
-      <h>120</h>
+      <x>63</x>
+      <y>423</y>
+      <w>153</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>Customer
 --
 ID:int&lt;pk&gt;
-userName:string
+name:string
 password:string
-telephone:string
-(Reservation)ID:int&lt;fk&gt;</panel_attributes>
+phone:string
+email:string</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>240</x>
-      <y>260</y>
-      <w>150</w>
-      <h>140</h>
+      <x>315</x>
+      <y>414</y>
+      <w>135</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Reservation
 --
 ID:int&lt;pk&gt;
-dateTime:dateTime
-state:ReservationState
-(Cinema)ID:int&lt;fk1&gt;
-(Movie)ID:int&lt;fk2&gt;
-(Screening)ID:int&lt;fk3&gt;
-(Seat))Id:int&lt;fk4&gt;
-/total:float</panel_attributes>
+time:dateTime
+state:enum
+price:float
+sid:int&lt;fk1&gt;(showtime id)
+seatid:int&lt;fk2&gt;(seat id)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
-      <y>260</y>
-      <w>170</w>
-      <h>160</h>
+      <x>621</x>
+      <y>9</y>
+      <w>153</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>Cinema
 --
 ID:int&lt;pk&gt;
 name:string
-address:string
-description:string
+address:TEXT
+description:TEXT
 city:string
-(Reservation)ID:int&lt;fk1&gt;
-(Movie)ID:int&lt;fk2&gt;
-(Screen)ID:int&lt;fk3&gt;
+
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>660</x>
-      <y>270</y>
-      <w>160</w>
-      <h>130</h>
+      <x>621</x>
+      <y>405</y>
+      <w>144</w>
+      <h>117</h>
     </coordinates>
-    <panel_attributes>Screening
+    <panel_attributes>Showtime
 --
 ID:int&lt;pk&gt;
-dateTime:dateTime
+time:dateTime
 price:float
-(Movie)ID:int&lt;fk1&gt;
-(Cinema)ID:int&lt;fk2&gt;
-(Seat)ID:int&lt;fk3&gt;</panel_attributes>
+mid:int&lt;fk2&gt;(movie id)
+sid:int&lt;fk2&gt;(screen id)
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>160</x>
-      <y>280</y>
-      <w>100</w>
-      <h>50</h>
+      <x>207</x>
+      <y>432</y>
+      <w>126</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=*
-Reservs &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+&lt; Reserved by</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>520</x>
-      <y>70</y>
-      <w>150</w>
-      <h>130</h>
+      <x>405</x>
+      <y>171</y>
+      <w>135</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>Movie
 --
 ID:int&lt;pk&gt;
 name:string
-type:TYPE
-description:string
-(Cinema)ID:int&lt;fk1&gt;</panel_attributes>
+type:string
+description:TEXT
+image:string</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>620</x>
-      <y>190</y>
-      <w>110</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=*
- show v</panel_attributes>
-    <additional_attributes>10.0;10.0;80.0;80.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>600</x>
-      <y>290</y>
-      <w>80</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=*
-Has &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>480</x>
-      <y>190</y>
-      <w>120</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=1..*
-Contains &gt;</panel_attributes>
-    <additional_attributes>10.0;70.0;60.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>350</x>
-      <y>390</y>
-      <w>320</w>
-      <h>140</h>
+      <x>441</x>
+      <y>468</y>
+      <w>198</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..*
 m2=1
 Contains &gt;</panel_attributes>
-    <additional_attributes>300.0;110.0;10.0;110.0;10.0;10.0</additional_attributes>
+    <additional_attributes>200.0;160.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>650</x>
-      <y>470</y>
-      <w>160</w>
-      <h>100</h>
+      <x>621</x>
+      <y>585</y>
+      <w>180</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Seat
 --
 ID:int&lt;pk&gt;
-isUsed:bool
-(Screening)ID:int&lt;fk&gt;</panel_attributes>
+state:enum
+sid:int&lt;pk,fk&gt;(showtime id)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>390</y>
-      <w>80</w>
-      <h>100</h>
+      <x>684</x>
+      <y>513</y>
+      <w>72</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -194,17 +148,76 @@ Is-on ^</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>621</x>
+      <y>171</y>
+      <w>144</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>Screen
+--
+ID:int&lt;pk&gt;
+width:INT
+height:INT
+cid:int&lt;fk2&gt;(cinema id)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>300</y>
-      <w>80</w>
-      <h>50</h>
+      <x>684</x>
+      <y>108</y>
+      <w>72</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=*
+m1=1
+m2=1..*
+Is-on ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>675</x>
+      <y>279</y>
+      <w>72</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+Is-on ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>459</x>
+      <y>279</y>
+      <w>243</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+plays ^</panel_attributes>
+    <additional_attributes>10.0;10.0;250.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>441</x>
+      <y>441</y>
+      <w>198</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
 m2=1
-&lt; own</panel_attributes>
-    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+Contains &gt;</panel_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>
