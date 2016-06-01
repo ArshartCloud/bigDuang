@@ -26,7 +26,7 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -36,7 +36,7 @@ public class InfoActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });*/
+        });
 
 
         mListView = (ListView)findViewById(R.id.lv);
@@ -49,7 +49,7 @@ public class InfoActivity extends AppCompatActivity {
     private  void init() {
         mData = new ArrayList<Map<String, Object>>();
         Map<String, Object> map;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 20; i++) {
             map = new HashMap<String, Object>();
             map.put("movie", "北京遇上西雅图hhhhhhhhhhhhhh");
             map.put("cinema", "珠江新城");

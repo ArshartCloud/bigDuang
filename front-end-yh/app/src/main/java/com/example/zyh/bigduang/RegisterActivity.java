@@ -30,6 +30,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.hope.myapplication.HomeMainActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,14 +95,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        */
+    */
 
         Button finishSignup = (Button) findViewById(R.id.finish_sign_up_button);
         finishSignup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                System.out.println("hhh");
+                //attemptSingUp();
+
+                Intent intent = new Intent(RegisterActivity.this, HomeMainActivity.class);
                 startActivity(intent);
             }
         });
@@ -155,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void attemptSingUp() {
         if (mAuthTask != null) {
             return;
         }
@@ -196,10 +199,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+            /*showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+            */
         }
+
     }
 
     private boolean isEmailValid(String email) {

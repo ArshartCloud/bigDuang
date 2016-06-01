@@ -22,21 +22,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".RegisterActivity"
             android:label="@string/action_sign_up" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".InfoActivity"
-            android:label="@string/title_activity_info"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".OrderActivity"
             android:label="@string/title_activity_order"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name="com.example.hope.myapplication.ChooseActivity"/>
+        <activity android:name="com.example.hope.myapplication.HomeMainActivity"/>
+        <activity android:name="com.example.hope.myapplication.MainActivity"/>
+        <activity android:name="com.example.hope.myapplication.MovieActivity"/>
+
     </application>
 
 </manifest>

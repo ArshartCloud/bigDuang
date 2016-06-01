@@ -30,6 +30,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.hope.myapplication.HomeMainActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 
-            Intent intent = new Intent(LoginActivity.this, OrderActivity.class);
+            Intent intent = new Intent(LoginActivity.this, HomeMainActivity.class);
             startActivity(intent);
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
