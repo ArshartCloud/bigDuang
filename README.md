@@ -11,5 +11,5 @@ A course project for sysu_software system analysis and design.
 张楚涵： 项目经理/前端开发  [@HOPE17](https://github.com/HOPE17/bigDuang)  
 曾艳红： 项目管理/前端开发   [@1900zyh](https://github.com/1900zyh)  
 曾  栋： 技术经理/后台开发 [@zengdgit](https://github.com/zengdgit)  
-李炜铭： 技术经理/后台开发   [@Arshart Cloud](https://github.com/ArshartCloud)
+李炜铭： 技术经理/后台开发   [@Arshart Cloud](https://github.com/ArshartCloud)   
 曾  进： 需求分析/后台开发  
