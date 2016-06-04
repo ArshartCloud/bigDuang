@@ -37,6 +37,10 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 /**
  * A login screen that offers login via email/password.
  */
@@ -193,6 +197,14 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
             focusView = mEmailView;
             cancel = true;
         }
+
+//debug net
+
+
+
+        cancel = false;
+        //debug
+
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
