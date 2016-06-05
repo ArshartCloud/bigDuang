@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -22,46 +23,27 @@ public class Activity_Movieinfo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movieinfo);
         List<Movietheatre> list = new ArrayList<Movietheatre>(); // 获取数据
-
-
-        Movietheatre test = new Movietheatre();
-        test.setTheatreDistance(2.33);
-        test.setTheatreId(0);
-        test.setTheatreMark(4.4);
-        test.setTheatrePrice(32.0);
-        test.setTheatreName("金逸影城");
-
-        Movietheatre test1 = new Movietheatre();
-        test1.setTheatreDistance(2.33);
-        test1.setTheatreId(1);
-        test1.setTheatreMark(4.4);
-        test1.setTheatrePrice(32.0);
-        test1.setTheatreName("飞扬影城");
-
-        Movietheatre test2 = new Movietheatre();
-        test2.setTheatreDistance(2.33);
-        test2.setTheatreId(2);
-        test2.setTheatreMark(4.4);
-        test2.setTheatrePrice(32.0);
-        test2.setTheatreName("映联万和");
-
-        list.add(test);
-        list.add(test1);
-        list.add(test2);
-
-
+        // 影院信息
+        for (int i = 0; i < 10; i++) {
+            Movietheatre test = new Movietheatre();
+            test.setTheatreDistance(2.33);
+            test.setTheatreId(0);
+            test.setTheatreMark(4.4);
+            test.setTheatrePrice(32.0);
+            test.setTheatreName("金逸影城");
+            list.add(test);
+        }
         TheatreAdapter adapter = new TheatreAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView2);
         listView.setAdapter(adapter);
-
-        Button bcinema = (Button)findViewById(R.id.choose_cinema);
-        bcinema.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 Intent intent = new Intent(Activity_Movieinfo.this, Activity_Cinemainfo.class);
                 startActivity(intent);
             }
         });
+
     }
 
     @Override

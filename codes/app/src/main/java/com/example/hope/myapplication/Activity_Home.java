@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -46,88 +47,47 @@ public class Activity_Home extends Activity {
         setContentView(R.layout.home);
         List<Movietheatre> list = new ArrayList<Movietheatre>(); // 获取数据
 
-        Movietheatre test = new Movietheatre();
-        test.setTheatreDistance(2.33);
-        test.setTheatreId(0);
-        test.setTheatreMark(4.4);
-        test.setTheatrePrice(32.0);
-        test.setTheatreName("金逸影城");
-
-        Movietheatre test1 = new Movietheatre();
-        test1.setTheatreDistance(2.33);
-        test1.setTheatreId(1);
-        test1.setTheatreMark(4.4);
-        test1.setTheatrePrice(32.0);
-        test1.setTheatreName("飞扬影城");
-
-        Movietheatre test2 = new Movietheatre();
-        test2.setTheatreDistance(2.33);
-        test2.setTheatreId(2);
-        test2.setTheatreMark(4.4);
-        test2.setTheatrePrice(32.0);
-        test2.setTheatreName("映联万和");
-
-        list.add(test);
-        list.add(test1);
-        list.add(test2);
-
-
+        // 影院信息
+        for (int i = 0; i < 5; i++) {
+            Movietheatre test = new Movietheatre();
+            test.setTheatreDistance(2.33);
+            test.setTheatreId(0);
+            test.setTheatreMark(4.4);
+            test.setTheatrePrice(32.0);
+            test.setTheatreName("金逸影城");
+            list.add(test);
+        }
         TheatreAdapter adapter = new TheatreAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
-
-
-        group = (ViewGroup) findViewById(R.id.addlayout);
-        ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setImageResource(R.drawable.bird);
-        group.addView(imageView);
-        mImageViews = new ArrayList<>();
-        mImageViews.add(imageView);
-
-        ImageView imageView1 = new ImageView(this);
-        imageView1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView1.setImageResource(R.drawable.bird);
-
-        group.addView(imageView1);
-        mImageViews.add(imageView1);
-
-        ImageView imageView2 = new ImageView(this);
-        imageView2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView2.setImageResource(R.drawable.bird);
-
-        group.addView(imageView2);
-        mImageViews.add(imageView2);
-
-        Button buser = (Button)findViewById(R.id.user_info);
-        Button bmovie = (Button)findViewById(R.id.movie_info);
-        Button bcinema = (Button)findViewById(R.id.cinema_info);
-        buser.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Activity_Home.this, Activity_Info.class);
-                startActivity(intent);
-            }
-        });
-
-        bmovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Activity_Home.this, Activity_Movieinfo.class);
-                startActivity(intent);
-            }
-        });
-
-        bcinema.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 Intent intent = new Intent(Activity_Home.this, Activity_Cinemainfo.class);
                 startActivity(intent);
             }
         });
 
+        // 电影信息
+        group = (ViewGroup) findViewById(R.id.addlayout);
+        mImageViews = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            imageView.setImageResource(R.drawable.bird);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Activity_Home.this, Activity_Movieinfo.class);
+                    startActivity(intent);
+                }
+            });
+            group.addView(imageView);
+            mImageViews.add(imageView);
+        }
+
         // debug ars
-        mImageView = imageView;
+        // mImageView = imageView;
         new Thread(networkTask).start();
 
         //
