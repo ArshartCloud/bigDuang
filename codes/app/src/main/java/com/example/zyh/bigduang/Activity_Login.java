@@ -33,28 +33,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.controller.ILogin;
-import com.example.controller.LoginController;
 import com.example.hope.myapplication.Activity_Home;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -86,7 +75,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    public ILogin login = new LoginController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,27 +208,106 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
         }
 
 //debug net
-        login.Login(mEmailView.getText().toString(), mPasswordView.getText().toString());
-//        new Thread(networkTask).start();
+//        login.Login(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        new Thread(networkTask).start();
         //debug
 
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-
-            Intent intent = new Intent(Activity_Login.this, Activity_Home.class);
-            startActivity(intent);
-            //mAuthTask = new UserLoginTask(email, password);
-            //mAuthTask.execute((Void) null);
-        }
+//
+//        if (cancel) {
+//            // There was an error; don't attempt login and focus the first
+//            // form field with an error.
+//            focusView.requestFocus();
+//        } else {
+//            // Show a progress spinner, and kick off a background task to
+//            // perform the user login attempt.
+//            showProgress(true);
+//
+//            Intent intent = new Intent(Activity_Login.this, Activity_Home.class);
+//            startActivity(intent);
+//            //mAuthTask = new UserLoginTask(email, password);
+//            //mAuthTask.execute((Void) null);
+//        }
     }
 
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String val = data.getString("value");
+            Log.i("mylog", "请求结果为-->" + val);
+            // TODO
+            // UI界面的更新等相关操作
+//            mEmailView.setError(val);
+            String TAG = "json";
+            try{
+
+                JSONObject result = new JSONObject(val);
+                boolean login = result.getBoolean("loginAble");
+                if (login) {
+                    showProgress(true);
+
+                    Intent intent = new Intent(Activity_Login.this, Activity_Home.class);
+                    startActivity(intent);
+                } else {
+                    mPasswordView.setError(getString(R.string.error_invalid_password));
+                }
+            }
+            catch (Exception e) {
+                Log.i(TAG, e.toString());
+            }
+        }
+    };
+
+    Runnable networkTask = new Runnable() {
+
+        @Override
+        public void run() {
+            // TODO
+            String baseURL = "http://115.28.84.73:8080/BigDuang/login";
+
+            String TAG = "http";
+            Log.i(TAG, "POST request");
+            String retSrc = "null";
+            try {
+//                String charset = HTTP.UTF_8;
+
+                HttpPost request = new HttpPost(baseURL);
+// 先封装一个 JSON 对象
+                JSONObject param = new JSONObject();
+                param.put("name", mEmailView.getText().toString());
+                param.put("password", mPasswordView.getText().toString());
+//                mEmailView.setText(param.toString());
+// 绑定到请求 Entry
+                StringEntity se = new StringEntity(param.toString(),"UTF-8");
+                request.setEntity(se);
+
+//                Log.i(TAG, "attemptLogin: before");
+// 发送请求
+                HttpResponse httpResponse = new DefaultHttpClient().execute(request);
+//                Log.i(TAG, "attemptLogin: send");
+// 得到应答的字符串，这也是一个 JSON 格式保存的数据
+                retSrc = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
+                Log.i("response", retSrc);
+// 生成 JSON 对象
+//        JSONObject result = new JSONObject( retSrc);
+//        String token = result.get("token");
+            }
+            catch (Exception e)
+            {
+//            e.printStackTrace();
+                Log.i(TAG, e.toString());
+            }
+
+            // 在这里进行 http request.网络请求相关操作
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putString("value", retSrc);
+            msg.setData(data);
+            handler.sendMessage(msg);
+        }
+    };
 
 
 

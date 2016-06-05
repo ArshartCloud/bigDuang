@@ -63,6 +63,7 @@ public class Activity_Cinemainfo extends Activity {
         imageView.setImageResource(R.drawable.bird);
         group.addView(imageView);
 
+
         ImageView imageView1 = new ImageView(this);
         imageView1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView1.setImageResource(R.drawable.bird);
