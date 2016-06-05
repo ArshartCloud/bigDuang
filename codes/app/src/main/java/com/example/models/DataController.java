@@ -10,6 +10,9 @@ public class DataController {
     private static DataController _instance;
     private Customer customer = new Customer();
     private List<Movie> movies = new ArrayList<>();
+    private List<Cinema> cinemas = new ArrayList<>();
+    private Movie selectedMovie;
+    private Cinema selectedCinema;
 
     public static DataController GetInstance ()
     {
@@ -33,5 +36,13 @@ public class DataController {
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
+    }
+
+    public List<Cinema> getCinemas() {
+        return cinemas;
+    }
+
+    public void setCinemas(List<Cinema> cinemas) {
+        this.cinemas = cinemas;
     }
 }
