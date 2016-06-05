@@ -75,11 +75,18 @@ public class Activity_Home extends Activity {
         // 电影信息
         group = (ViewGroup) findViewById(R.id.addlayout);
         mImageViews = new ArrayList<>();
+<<<<<<< HEAD
         for (int i = 0; i < 5; i++) {
             ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             imageView.setImageResource(R.drawable.bird);
             
+=======
+        for (int i = 0; i < 3; i++) {
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            imageView.setImageResource(R.drawable.bird);
+>>>>>>> refs/remotes/1900zyh/master
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -93,7 +100,11 @@ public class Activity_Home extends Activity {
 
         // debug ars
         // mImageView = imageView;
+<<<<<<< HEAD
 //        new Thread(networkTask).start();
+=======
+        new Thread(networkTask).start();
+>>>>>>> refs/remotes/1900zyh/master
         new Thread(pullMovie).start();
 
         //
