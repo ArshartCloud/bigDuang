@@ -9,12 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.models.Cinema;
 import com.example.models.DataController;
 import com.example.models.Movie;
+import com.example.hope.myapplication.Cinema;
 import com.example.zyh.bigduang.R;
 
 import org.apache.http.HttpResponse;
@@ -33,18 +32,16 @@ public class Activity_Movieinfo extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movieinfo);
-        List<Movietheatre> list = new ArrayList<Movietheatre>(); // 获取数据
+        List<Cinema> list = new ArrayList<Cinema>(); // 获取数据
         // 影院信息
         for (int i = 0; i < 10; i++) {
-            Movietheatre test = new Movietheatre();
-            test.setTheatreDistance(2.33);
-            test.setTheatreId(0);
-            test.setTheatreMark(4.4);
-            test.setTheatrePrice(32.0);
-            test.setTheatreName("金逸影城");
+            Cinema test = new Cinema();
+            test.setcinemaName("金逸影城");
+            test.setaddress("番禺区");
+            test.setcity("广州");
             list.add(test);
         }
-        TheatreAdapter adapter = new TheatreAdapter(this, list);
+        CinemaAdapter adapter = new CinemaAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView2);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,10 +88,10 @@ public class Activity_Movieinfo extends Activity {
 
                     JSONObject jo = cArr.getJSONObject(i);
                     Cinema c = new Cinema();
-                    c.setId(jo.getInt("id"));
-                    c.setName(jo.getString("name"));
-                    c.setCity(jo.getString("city"));
-                    c.setAddress(jo.getString("address"));
+                    c.setcinemaId(jo.getInt("id"));
+                    c.setcinemaName(jo.getString("name"));
+                    c.setcity(jo.getString("city"));
+                    c.setaddress(jo.getString("address"));
                     DataController.GetInstance().getCinemas().add(c);
                 }
             } catch (Exception e) {

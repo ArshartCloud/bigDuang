@@ -1,5 +1,7 @@
 package com.example.models;
 
+import com.example.hope.myapplication.Cinema;
+
 import java.util.ArrayList;
 import java.util.List;
 

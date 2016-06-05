@@ -8,27 +8,21 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.example.models.Cinema;
 import com.example.models.DataController;
 import com.example.models.Movie;
-import com.example.zyh.bigduang.Activity_Info;
 import com.example.zyh.bigduang.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -51,19 +45,17 @@ public class Activity_Home extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        List<Movietheatre> list = new ArrayList<Movietheatre>(); // 获取数据
+        List<Cinema> list = new ArrayList<Cinema>(); // 获取数据
 
         // 影院信息
         for (int i = 0; i < 5; i++) {
-            Movietheatre test = new Movietheatre();
-            test.setTheatreDistance(2.33);
-            test.setTheatreId(0);
-            test.setTheatreMark(4.4);
-            test.setTheatrePrice(32.0);
-            test.setTheatreName("金逸影城");
+            Cinema test = new Cinema();
+            test.setcinemaName("金逸影城");
+            test.setaddress("番禺区");
+            test.setcity("广州");
             list.add(test);
         }
-        TheatreAdapter adapter = new TheatreAdapter(this, list);
+        CinemaAdapter adapter = new CinemaAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,16 +72,18 @@ public class Activity_Home extends Activity {
         mImageViews = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            ImageView imageView = new ImageView(this);
+            final ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             imageView.setImageResource(R.drawable.bird);
 
             imageView.setPadding(20,20,20,20);
+            //final int hh = i;
+            final int index = i;
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // movie = balabala
-//                    DataController.GetInstance().setSelectedMovie(i);
+                    Log.i("onclik", String.valueOf(index));
+//                  DataController.GetInstance().setSelectedMovie(i);
                     Intent intent = new Intent(Activity_Home.this, Activity_Movieinfo.class);
                     startActivity(intent);
                 }
@@ -188,10 +182,10 @@ public class Activity_Home extends Activity {
 
                     JSONObject jo = cArr.getJSONObject(i);
                     Cinema c = new Cinema();
-                    c.setId(jo.getInt("id"));
-                    c.setName(jo.getString("name"));
-                    c.setCity(jo.getString("city"));
-                    c.setAddress(jo.getString("address"));
+                    c.setcinemaId(jo.getInt("id"));
+                    c.setcinemaName(jo.getString("name"));
+                    c.setcity(jo.getString("city"));
+                    c.setaddress(jo.getString("address"));
                     DataController.GetInstance().getCinemas().add(c);
                 }
                 new Thread(pullImage).start();
