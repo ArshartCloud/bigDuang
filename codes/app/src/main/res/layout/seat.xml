@@ -3,6 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mylinear">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="选座"
+        android:layout_marginTop="20px"
+        android:textColor="#ffffff"
+        android:background="#d9090a"
+        android:layout_marginBottom="20px"
+        android:id="@+id/textView"
+        android:gravity="center"
+        android:layout_gravity="center" />
 
 </RelativeLayout>

@@ -56,13 +56,16 @@ public class Activity_Seat extends AppCompatActivity {
         layout.setId(R.id.my_gridview);
         RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        lp.addRule(RelativeLayout.BELOW, R.id.textView);
         layout.setLayoutParams(lp);
 
-        RelativeLayout.LayoutParams param2=new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layout.setPaddingRelative(0, 80, 0, 80);
+
+        RelativeLayout.LayoutParams param2=new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         param2.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         param2.addRule(RelativeLayout.BELOW, R.id.my_gridview);
         bgopay.setLayoutParams(param2);
+        //bgopay.setPaddingRelative(0, 80, 0, 0);
         llayout.addView(layout);
         llayout.addView(bgopay);
     }

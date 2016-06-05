@@ -86,7 +86,11 @@ public class Activity_Home extends Activity {
             ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             imageView.setImageResource(R.drawable.bird);
+<<<<<<< HEAD
 >>>>>>> refs/remotes/1900zyh/master
+=======
+            imageView.setPadding(20,20,20,20);
+>>>>>>> 610276a96f6503cae61fc0e881ba9b9c125885b5
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
