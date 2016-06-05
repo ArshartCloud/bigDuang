@@ -1,25 +1,25 @@
 package com.example.models;
 
 import android.content.Context;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import android.os.Handler;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.hope.myapplication.Movietheatre;
 import com.example.zyh.bigduang.R;
 
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.List;
+//import java.util.logging.Handler;
 
 /**
- * Created by lenovo on 2016/6/5 0005.
+ * Created by hope on 5/29/16.
  */
-//TODO
-    // replace theaterAdapter
 public class CinemaAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Context context;
@@ -30,16 +30,15 @@ public class CinemaAdapter extends BaseAdapter implements View.OnClickListener {
 
     private class ViewHolder {
         TextView name;
-        TextView mark;
-        TextView distance;
-        TextView price;
+        TextView city;
+        TextView address;
     }
 
     public CinemaAdapter (Context c, List<Cinema> list) {
         if (null != list) {
             cinemaList= list;
         } else {
-            cinemaList= new ArrayList<>();
+            cinemaList= new ArrayList<Cinema>();
         }
         this.context = c;
         layoutInflater = LayoutInflater.from(context);;
@@ -86,7 +85,7 @@ public class CinemaAdapter extends BaseAdapter implements View.OnClickListener {
 
     @Override
     public long getItemId(int position) {
-        //return theatreList.get(position).getTheatreId();
+        //return cinemaList.get(position).getcinemaId();
         return position;
     }
 
@@ -99,21 +98,19 @@ public class CinemaAdapter extends BaseAdapter implements View.OnClickListener {
             holder = new ViewHolder();
 
             holder.name = (TextView) convertView.findViewById(R.id.tv_name);
-            holder.mark = (TextView) convertView.findViewById(R.id.mark);
-            holder.distance = (TextView) convertView.findViewById(R.id.distance);
-            holder.price = (TextView) convertView.findViewById(R.id.price);
+            holder.city = (TextView) convertView.findViewById(R.id.city);
+            holder.address = (TextView) convertView.findViewById(R.id.address);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-//        Cinema thea = theatreList.get(position); // 获取当前项数据
-//        if (null != thea) {
-//            holder.name.setText(thea.getTheatreName());
-//            holder.mark.setText("Mark: " + Double.toString(thea.getTheartreMark()) + "/5");
-//            holder.distance.setText(Double.toString(thea.getTheatreDistance()));
-//            holder.price.setText("Price: $" + Double.toString(thea.getTheatrePrice()));
-//
-//        }
+
+        Cinema thea = cinemaList.get(position); // 获取当前项数据
+        if (null != thea) {
+            holder.name.setText(thea.getName());
+            holder.city.setText("所在城市: " + thea.getCity());
+            holder.address.setText(thea.getAddress());
+        }
         return convertView;
     }
 

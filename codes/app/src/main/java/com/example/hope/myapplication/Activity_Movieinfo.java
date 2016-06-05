@@ -33,27 +33,27 @@ public class Activity_Movieinfo extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movieinfo);
-        List<Movietheatre> list = new ArrayList<Movietheatre>(); // 获取数据
-        // 影院信息
-        for (int i = 0; i < 10; i++) {
-            Movietheatre test = new Movietheatre();
-            test.setTheatreDistance(2.33);
-            test.setTheatreId(0);
-            test.setTheatreMark(4.4);
-            test.setTheatrePrice(32.0);
-            test.setTheatreName("金逸影城");
-            list.add(test);
-        }
-        TheatreAdapter adapter = new TheatreAdapter(this, list);
-        listView = (ListView)findViewById(R.id.listView2);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                Intent intent = new Intent(Activity_Movieinfo.this, Activity_Cinemainfo.class);
-                startActivity(intent);
-            }
-        });
+//        List<Movietheatre> list = new ArrayList<Movietheatre>(); // 获取数据
+//        // 影院信息
+//        for (int i = 0; i < 10; i++) {
+//            Movietheatre test = new Movietheatre();
+//            test.setTheatreDistance(2.33);
+//            test.setTheatreId(0);
+//            test.setTheatreMark(4.4);
+//            test.setTheatrePrice(32.0);
+//            test.setTheatreName("金逸影城");
+//            list.add(test);
+//        }
+//        TheatreAdapter adapter = new TheatreAdapter(this, list);
+//        listView = (ListView)findViewById(R.id.listView2);
+//        listView.setAdapter(adapter);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//                Intent intent = new Intent(Activity_Movieinfo.this, Activity_Cinemainfo.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
 

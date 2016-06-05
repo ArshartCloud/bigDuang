@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.models.Cinema;
+import com.example.models.CinemaAdapter;
 import com.example.models.DataController;
 import com.example.models.Movie;
 import com.example.zyh.bigduang.Activity_Info;
@@ -45,31 +46,26 @@ import java.util.List;
 public class Activity_Home extends Activity {
     private ListView listView;
     private ImageView mImageView;
+    private List<Cinema> list;
     ViewGroup group;
     private List<ImageView> mImageViews;
+    CinemaAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        List<Movietheatre> list = new ArrayList<Movietheatre>(); // 获取数据
+        adapter = new CinemaAdapter(this, list);
 
-        // 影院信息
-        for (int i = 0; i < 5; i++) {
-            Movietheatre test = new Movietheatre();
-            test.setTheatreDistance(2.33);
-            test.setTheatreId(0);
-            test.setTheatreMark(4.4);
-            test.setTheatrePrice(32.0);
-            test.setTheatreName("金逸影城");
-            list.add(test);
-        }
-        TheatreAdapter adapter = new TheatreAdapter(this, list);
+        list = DataController.GetInstance().getCinemas();
+
+        adapter = new CinemaAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//                Movietheatre = // cinema =balalba
+                DataController.GetInstance().setSelectedCinema(list.get(arg2));
                 Intent intent = new Intent(Activity_Home.this, Activity_Cinemainfo.class);
                 startActivity(intent);
             }
@@ -78,12 +74,10 @@ public class Activity_Home extends Activity {
         // 电影信息
         group = (ViewGroup) findViewById(R.id.addlayout);
         mImageViews = new ArrayList<>();
-
         for (int i = 0; i < 5; i++) {
             ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            imageView.setImageResource(R.drawable.bird);
-
+//            imageView.setImageResource(R.drawable.bird);
             imageView.setPadding(20,20,20,20);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,13 +91,7 @@ public class Activity_Home extends Activity {
             group.addView(imageView);
             mImageViews.add(imageView);
         }
-
-        // debug ars
-        // mImageView = imageView;
-
         new Thread(pullMovie).start();
-
-        //
     }
 
     Handler handler = new Handler() {
@@ -118,6 +106,22 @@ public class Activity_Home extends Activity {
         }
     };
 
+    Handler cinemaHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String val = data.getString("value");
+            // UI界面的更新等相关操作
+            list = DataController.GetInstance().getCinemas();
+            String TAG = "chandler";
+            Log.i(TAG, "handleMessage: "+list.get(3).getName());
+            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetInvalidated();
+//            mImageViews.get(msg.what).setImageBitmap((Bitmap) msg.obj);
+        }
+    };
+
     Runnable pullImage = new Runnable() {
 
         @Override
@@ -126,7 +130,6 @@ public class Activity_Home extends Activity {
             String baseURL = "http://115.28.84.73:8080/BigDuang/img/";
             for (int i = 0; i < movies.size() && i < mImageViews.size(); ++i) {
                 final Bitmap bitmap = getHttpBitmap(baseURL + movies.get(i).getImgName());
-
                 handler.obtainMessage(i,bitmap).sendToTarget();
             }
     //        handler.obtainMessage(1,bitmap).sendToTarget();
@@ -175,6 +178,7 @@ public class Activity_Home extends Activity {
 
                 DataController.GetInstance().insertCinemaFromJSON(cArr);
                 DataController.GetInstance().insertMovieFromJSON(mArr);
+                cinemaHandler.obtainMessage().sendToTarget();
                 new Thread(pullImage).start();
             } catch (Exception e) {
                 e.printStackTrace();
