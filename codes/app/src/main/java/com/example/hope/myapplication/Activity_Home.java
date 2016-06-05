@@ -203,8 +203,16 @@ public class Activity_Home extends Activity {
 
         @Override
         public void run() {
-            String url = 
-            HttpGet httpget = new HttpGet()
+            String url = "http://115.28.84.73:8080/BigDuang/list";
+            String result = "";
+            try{
+                HttpGet httpGet = new HttpGet();
+                HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
+                result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
+                Log.i("dfs", result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 
