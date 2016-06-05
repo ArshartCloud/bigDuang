@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,64 +25,38 @@ public class Activity_Cinemainfo extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cinemainfo);
+
+        // 场次信息
         List<ChooseItem> list = new ArrayList<ChooseItem>(); // 获取数据
-
-
-        ChooseItem test = new ChooseItem();
-        test.setChooseItemId(0);
-        test.setChooseItemEC("英语3D");
-        test.setChooseItemPrice(41.3);
-        test.setChooseItemTime("14:00");
-
-        ChooseItem test1 = new ChooseItem();
-        test1.setChooseItemId(1);
-        test1.setChooseItemEC("英语3D");
-        test1.setChooseItemPrice(41.3);
-        test1.setChooseItemTime("14:30");
-
-        ChooseItem test2 = new ChooseItem();
-        test2.setChooseItemId(2);
-        test2.setChooseItemEC("英语3D");
-        test2.setChooseItemPrice(41.3);
-        test2.setChooseItemTime("14:45");
-
-
-        list.add(test);
-        list.add(test1);
-        list.add(test2);
-
-
+        for (int i = 0; i < 12; i++) {
+            ChooseItem test = new ChooseItem();
+            test.setChooseItemId(0);
+            test.setChooseItemEC("英语3D");
+            test.setChooseItemPrice(41.3);
+            test.setChooseItemTime("14:00");
+            list.add(test);
+        }
         ChooseAdapter adapter = new ChooseAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView2);
         listView.setAdapter(adapter);
-
-
-        //final RelativeLayout layout = (RelativeLayout)findViewById(R.id.addlayout);
-        ViewGroup group = (ViewGroup) findViewById(R.id.addlayout);
-        ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setImageResource(R.drawable.bird);
-        group.addView(imageView);
-
-
-        ImageView imageView1 = new ImageView(this);
-        imageView1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView1.setImageResource(R.drawable.bird);
-        group.addView(imageView1);
-
-        ImageView imageView2 = new ImageView(this);
-        imageView2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView2.setImageResource(R.drawable.bird);
-        group.addView(imageView2);
-
-        Button choose_seat = (Button) findViewById(R.id.choose_seat);
-        choose_seat.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 Intent intent = new Intent(Activity_Cinemainfo.this, Activity_Seat.class);
                 startActivity(intent);
             }
         });
+
+
+        //final RelativeLayout layout = (RelativeLayout)findViewById(R.id.addlayout);
+        // 电影信息
+        ViewGroup group = (ViewGroup) findViewById(R.id.addlayout);
+        for (int i = 0; i < 12; i++) {
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            imageView.setImageResource(R.drawable.bird);
+            group.addView(imageView);
+        }
 
     }
 

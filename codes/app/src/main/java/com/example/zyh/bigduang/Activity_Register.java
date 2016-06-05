@@ -67,8 +67,9 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private AutoCompleteTextView mUserView;
     private EditText mPasswordView;
+    private EditText mConfirmView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -76,51 +77,20 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        // Set up the login form.
-        /*mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-    */
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mUserView = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.sign_up_password);
+        mConfirmView = (EditText) findViewById(R.id.confirm_pass);
 
         Button finishSignup = (Button) findViewById(R.id.finish_sign_up_button);
         finishSignup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 attemptSingUp();
-
-//                Intent intent = new Intent(Activity_Register.this, Activity_Home.class);
-//                startActivity(intent);
             }
         });
-
-
-
     }
 
     private void populateAutoComplete() {
@@ -139,7 +109,7 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mUserView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -177,37 +147,36 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
             return;
         }
 
-
         // Reset errors.
-        mEmailView.setError(null);
+        mUserView.setError(null);
         mPasswordView.setError(null);
+        mConfirmView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        String username = mUserView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String confirm = mConfirmView.getText().toString();
         String TAG = "sign";
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+        if (TextUtils.isEmpty(username)) {
+            mUserView.setError(getString(R.string.error_field_required));
+            focusView = mUserView;
+            cancel = true;
+//          Log.i(TAG, "attemptSingUp: true");
+        } else if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
+        } else if (TextUtils.isEmpty(confirm) || !confirm.equals(password)) {
+            mConfirmView.setError(getString(R.string.error_invalid_password));
+            focusView = mConfirmView;
+            cancel = true;
+//          Log.i(TAG, "attemptSingUp: true");
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-//            Log.i(TAG, "attemptSingUp: true");
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-//        cancel = true;
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -217,13 +186,11 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
             // perform the user login attempt.
 
             new Thread(networkTask).start();
-
             /*showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
             */
         }
-
     }
 
 
@@ -244,11 +211,12 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
                 if (ok) {
 //                    showProgress(true);
 
-     //               Intent intent = new Intent(Activity_Register.this, Activity_Login.class);
-       //             startActivity(intent);
+                    Intent intent = new Intent(Activity_Register.this, Activity_Home.class);
+                    startActivity(intent);
                 } else {
                     if (result.getBoolean("nameconflict")) {
-                        mPasswordView.setError("The name has been used");
+                        mUserView.setError(getString(R.string.error_invalid_username));
+                        mUserView.requestFocus();
                     } else {
                         mPasswordView.setError(getString(R.string.error_invalid_password));
                     }
@@ -271,7 +239,7 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
                 HttpPost request = new HttpPost(baseURL);
                 // 先封装一个 JSON 对象
                 JSONObject param = new JSONObject();
-                param.put("name", mEmailView.getText().toString());
+                param.put("name", mUserView.getText().toString());
                 param.put("password", mPasswordView.getText().toString());
                 // 绑定到请求 Entry
                 StringEntity se = new StringEntity(param.toString(),"UTF-8");
@@ -384,7 +352,7 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
                 new ArrayAdapter<>(Activity_Register.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        mUserView.setAdapter(adapter);
     }
 
 
@@ -434,7 +402,7 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
             // TODO: register the new account here.
             return true;
         }
-
+/*
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
@@ -447,7 +415,7 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
                 mPasswordView.requestFocus();
             }
         }
-
+*/
         @Override
         protected void onCancelled() {
             mAuthTask = null;

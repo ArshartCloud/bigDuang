@@ -34,7 +34,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.hope.myapplication.Activity_Home;
-import com.example.models.DataController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,10 +118,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    /*public void goSignup(View view) {
-        startActivity(new Intent("android.intent.action.Activity_Register"));
-
-    }*/
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -182,30 +177,22 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
-
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
 
-        // Check for a valid email address.
+        // 输入不得为空
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
+            mEmailView.requestFocus();
+            return;
+        } else if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            mPasswordView.requestFocus();
+            return;
         }
 
 //debug net
@@ -246,8 +233,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
                 JSONObject result = new JSONObject(val);
                 boolean login = result.getBoolean("loginAble");
                 if (login) {
-                    DataController.GetInstance().getCustomer().setName(mEmailView.getText().toString());
-
                     showProgress(true);
 
                     Intent intent = new Intent(Activity_Login.this, Activity_Home.class);
@@ -298,17 +283,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
         }
     };
 
-
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -436,7 +410,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
             // TODO: register the new account here.
             return true;
         }
-
+/*
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
@@ -449,7 +423,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
                 mPasswordView.requestFocus();
             }
         }
-
+*/
         @Override
         protected void onCancelled() {
             mAuthTask = null;
