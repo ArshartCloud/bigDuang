@@ -45,9 +45,10 @@ public class Activity_Movieinfo extends Activity {
         TextView movieName = (TextView)findViewById(R.id.textView11);
         TextView grade = (TextView)findViewById(R.id.grade);
         TextView describe = (TextView)findViewById(R.id.grade);
+
         Movie movie = DataController.GetInstance().getSelectedMovie();
         movieImage.setImageBitmap(movie.getBitmap());
-
+        movieName.setText(movie.getName());
 
 
         // 影院信息
