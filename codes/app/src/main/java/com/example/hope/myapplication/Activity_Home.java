@@ -69,7 +69,7 @@ public class Activity_Home extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//                Movietheatre =
+//                Movietheatre = // cinema =balalba
                 Intent intent = new Intent(Activity_Home.this, Activity_Cinemainfo.class);
                 startActivity(intent);
             }
@@ -173,27 +173,8 @@ public class Activity_Home extends Activity {
                 JSONArray mArr =  jso.getJSONArray("movies");
                 JSONArray cArr = jso.getJSONArray("cinema");
 
-                DataController.GetInstance().getMovies().clear();
-                for (int i = 0; i < mArr.length(); ++i) {
-
-                    JSONObject jo = mArr.getJSONObject(i);
-                    Movie m = new Movie();
-                    m.setId(jo.getInt("id"));
-                    m.setName(jo.getString("name"));
-                    m.setImgName(jo.getString("img"));
-                    DataController.GetInstance().getMovies().add(m);
-                }
-                DataController.GetInstance().getMovies().clear();
-                for (int i = 0; i < cArr.length(); ++i) {
-
-                    JSONObject jo = cArr.getJSONObject(i);
-                    Cinema c = new Cinema();
-                    c.setId(jo.getInt("id"));
-                    c.setName(jo.getString("name"));
-                    c.setCity(jo.getString("city"));
-                    c.setAddress(jo.getString("address"));
-                    DataController.GetInstance().getCinemas().add(c);
-                }
+                DataController.GetInstance().insertCinemaFromJSON(cArr);
+                DataController.GetInstance().insertMovieFromJSON(mArr);
                 new Thread(pullImage).start();
             } catch (Exception e) {
                 e.printStackTrace();

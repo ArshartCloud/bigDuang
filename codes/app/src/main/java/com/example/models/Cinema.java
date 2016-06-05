@@ -1,5 +1,9 @@
 package com.example.models;
 
+import org.json.JSONObject;
+
+import java.util.List;
+
 /**
  * Created by Arshart on 2016/6/5 0005.
  */
@@ -40,4 +44,6 @@ public class Cinema {
     public void setAddress(String address) {
         this.address = address;
     }
+
+
 }

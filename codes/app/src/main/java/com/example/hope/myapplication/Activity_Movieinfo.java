@@ -61,7 +61,7 @@ public class Activity_Movieinfo extends Activity {
 
 
 
-    Runnable pullMovie = new Runnable() {
+    Runnable pullCinema = new Runnable() {
 
         @Override
         public void run() {
@@ -69,8 +69,10 @@ public class Activity_Movieinfo extends Activity {
             String result = "null";
             String TAG = "pullCinema";
             Log.i(TAG, "run: ");
+//            int cinemaId = DataController.GetInstance().getSelectedMovie().getId();
+            int cinemaID = 1;
             try{
-                HttpGet httpGet = new HttpGet(baseURL+DataController.GetInstance().getSelectedMovie().getId());
+                HttpGet httpGet = new HttpGet(baseURL+cinemaID);
                 HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
                 result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
                 JSONObject jso = new JSONObject(result);

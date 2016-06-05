@@ -1,5 +1,8 @@
 package com.example.models;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,4 +64,40 @@ public class DataController {
     public void setSelectedCinema(Cinema selectedCinema) {
         this.selectedCinema = selectedCinema;
     }
+
+    public void insertCinemaFromJSON(JSONArray jArr) {
+        try{
+            DataController.GetInstance().getCinemas().clear();
+            for (int i = 0; i < jArr.length(); ++i) {
+                JSONObject jo = jArr.getJSONObject(i);
+                Cinema c = new Cinema();
+                c.setId(jo.getInt("id"));
+                c.setName(jo.getString("name"));
+                c.setCity(jo.getString("city"));
+                c.setAddress(jo.getString("address"));
+                DataController.GetInstance().getCinemas().add(c);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void insertMovieFromJSON(JSONArray jArr) {
+        try{
+            DataController.GetInstance().getMovies().clear();
+            for (int i = 0; i < jArr.length(); ++i) {
+                JSONObject jo = jArr.getJSONObject(i);
+                Movie m = new Movie();
+                m.setId(jo.getInt("id"));
+                m.setName(jo.getString("name"));
+                m.setImgName(jo.getString("img"));
+                DataController.GetInstance().getMovies().add(m);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
