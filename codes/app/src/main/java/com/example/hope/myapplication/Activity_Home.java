@@ -8,14 +8,12 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -23,17 +21,15 @@ import com.example.models.Cinema;
 import com.example.models.CinemaAdapter;
 import com.example.models.DataController;
 import com.example.models.Movie;
-import com.example.zyh.bigduang.Activity_Info;
 import com.example.zyh.bigduang.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +38,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Activity_Home extends Activity {
     private ListView listView;
@@ -55,7 +52,6 @@ public class Activity_Home extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        adapter = new CinemaAdapter(this, list);
 
         list = DataController.GetInstance().getCinemas();
 
@@ -75,15 +71,18 @@ public class Activity_Home extends Activity {
         group = (ViewGroup) findViewById(R.id.addlayout);
         mImageViews = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            ImageView imageView = new ImageView(this);
+            final ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 //            imageView.setImageResource(R.drawable.bird);
             imageView.setPadding(20,20,20,20);
+            //final int hh = i;
+            final int index = i;
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // movie = balabala
-//                    DataController.GetInstance().setSelectedMovie(i);
+                    Log.i("onclik", String.valueOf(index));
+                    List<Movie> ml = DataController.GetInstance().getMovies();
+                    DataController.GetInstance().setSelectedMovie(ml.get(index));
                     Intent intent = new Intent(Activity_Home.this, Activity_Movieinfo.class);
                     startActivity(intent);
                 }
@@ -113,12 +112,9 @@ public class Activity_Home extends Activity {
             Bundle data = msg.getData();
             String val = data.getString("value");
             // UI界面的更新等相关操作
-            list = DataController.GetInstance().getCinemas();
             String TAG = "chandler";
             Log.i(TAG, "handleMessage: "+list.get(3).getName());
             adapter.notifyDataSetChanged();
-            adapter.notifyDataSetInvalidated();
-//            mImageViews.get(msg.what).setImageBitmap((Bitmap) msg.obj);
         }
     };
 
@@ -130,6 +126,7 @@ public class Activity_Home extends Activity {
             String baseURL = "http://115.28.84.73:8080/BigDuang/img/";
             for (int i = 0; i < movies.size() && i < mImageViews.size(); ++i) {
                 final Bitmap bitmap = getHttpBitmap(baseURL + movies.get(i).getImgName());
+                movies.get(i).setBitmap(bitmap);
                 handler.obtainMessage(i,bitmap).sendToTarget();
             }
     //        handler.obtainMessage(1,bitmap).sendToTarget();

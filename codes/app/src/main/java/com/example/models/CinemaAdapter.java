@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.models.Cinema;
 import com.example.zyh.bigduang.R;
 
 import java.awt.font.TextAttribute;
@@ -107,6 +108,7 @@ public class CinemaAdapter extends BaseAdapter implements View.OnClickListener {
 
         Cinema thea = cinemaList.get(position); // 获取当前项数据
         if (null != thea) {
+
             holder.name.setText(thea.getName());
             holder.city.setText("所在城市: " + thea.getCity());
             holder.address.setText(thea.getAddress());
