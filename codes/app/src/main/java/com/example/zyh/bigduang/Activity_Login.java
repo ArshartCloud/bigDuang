@@ -239,7 +239,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
             Log.i("mylog", "请求结果为-->" + val);
             // TODO
             // UI界面的更新等相关操作
-//            mEmailView.setError(val);
             String TAG = "json";
             try{
 
@@ -264,40 +263,27 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
 
         @Override
         public void run() {
-            // TODO
             String baseURL = "http://115.28.84.73:8080/BigDuang/login";
-
-            String TAG = "http";
-            Log.i(TAG, "POST request");
+            String TAG = "Login";
             String retSrc = "null";
             try {
-//                String charset = HTTP.UTF_8;
-
                 HttpPost request = new HttpPost(baseURL);
-// 先封装一个 JSON 对象
+                // 先封装一个 JSON 对象
                 JSONObject param = new JSONObject();
                 param.put("name", mEmailView.getText().toString());
                 param.put("password", mPasswordView.getText().toString());
-//                mEmailView.setText(param.toString());
-// 绑定到请求 Entry
+                // 绑定到请求 Entry
                 StringEntity se = new StringEntity(param.toString(),"UTF-8");
                 request.setEntity(se);
-
-//                Log.i(TAG, "attemptLogin: before");
-// 发送请求
+                // 发送请求
                 HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-//                Log.i(TAG, "attemptLogin: send");
-// 得到应答的字符串，这也是一个 JSON 格式保存的数据
+                // 得到应答的字符串，这也是一个 JSON 格式保存的数据
                 retSrc = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
-                Log.i("response", retSrc);
-// 生成 JSON 对象
-//        JSONObject result = new JSONObject( retSrc);
-//        String token = result.get("token");
+                Log.i(TAG, retSrc);
             }
             catch (Exception e)
             {
-//            e.printStackTrace();
-                Log.i(TAG, e.toString());
+                e.printStackTrace();
             }
 
             // 在这里进行 http request.网络请求相关操作

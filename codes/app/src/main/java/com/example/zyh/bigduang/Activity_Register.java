@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -28,6 +31,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.hope.myapplication.Activity_Home;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,17 +103,24 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     */
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        populateAutoComplete();
+
+        mPasswordView = (EditText) findViewById(R.id.sign_up_password);
 
         Button finishSignup = (Button) findViewById(R.id.finish_sign_up_button);
         finishSignup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //attemptSingUp();
+                attemptSingUp();
 
-                Intent intent = new Intent(Activity_Register.this, Activity_Home.class);
-                startActivity(intent);
+//                Intent intent = new Intent(Activity_Register.this, Activity_Home.class);
+//                startActivity(intent);
             }
         });
+
+
+
     }
 
     private void populateAutoComplete() {
@@ -160,6 +177,7 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
             return;
         }
 
+
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -167,12 +185,12 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-
+        String TAG = "sign";
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -183,12 +201,13 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
+//            Log.i(TAG, "attemptSingUp: true");
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
         }
-
+//        cancel = true;
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -196,6 +215,9 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+
+            new Thread(networkTask).start();
+
             /*showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -204,14 +226,86 @@ public class Activity_Register extends AppCompatActivity implements LoaderCallba
 
     }
 
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String val = data.getString("value");
+            Log.i("mylog", "请求结果为-->" + val);
+            // TODO
+            // UI界面的更新等相关操作
+            String TAG = "json";
+            try{
+
+                JSONObject result = new JSONObject(val);
+                boolean ok = result.getBoolean("success");
+                if (ok) {
+//                    showProgress(true);
+
+     //               Intent intent = new Intent(Activity_Register.this, Activity_Login.class);
+       //             startActivity(intent);
+                } else {
+                    if (result.getBoolean("nameconflict")) {
+                        mPasswordView.setError("The name has been used");
+                    } else {
+                        mPasswordView.setError(getString(R.string.error_invalid_password));
+                    }
+                }
+            }
+            catch (Exception e) {
+                Log.i(TAG, e.toString());
+            }
+        }
+    };
+
+    Runnable networkTask = new Runnable() {
+
+        @Override
+        public void run() {
+            String baseURL = "http://115.28.84.73:8080/BigDuang/register";
+            String TAG = "Login";
+            String retSrc = "null";
+            try {
+                HttpPost request = new HttpPost(baseURL);
+                // 先封装一个 JSON 对象
+                JSONObject param = new JSONObject();
+                param.put("name", mEmailView.getText().toString());
+                param.put("password", mPasswordView.getText().toString());
+                // 绑定到请求 Entry
+                StringEntity se = new StringEntity(param.toString(),"UTF-8");
+                Log.i(TAG, se.toString());
+                request.setEntity(se);
+                // 发送请求
+                HttpResponse httpResponse = new DefaultHttpClient().execute(request);
+                // 得到应答的字符串，这也是一个 JSON 格式保存的数据
+                retSrc = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
+                Log.i(TAG, retSrc);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            // 在这里进行 http request.网络请求相关操作
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putString("value", retSrc);
+            msg.setData(data);
+            handler.sendMessage(msg);
+        }
+    };
+
+
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+//        return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+//        return password.length() > 4;
+        return true;
     }
 
     /**

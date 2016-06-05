@@ -21,6 +21,7 @@ import com.example.zyh.bigduang.Activity_Info;
 import com.example.zyh.bigduang.R;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -129,6 +130,7 @@ public class Activity_Home extends Activity {
         // debug ars
         mImageView = imageView;
         new Thread(networkTask).start();
+        new Thread(pullMovie).start();
 
         //
     }
@@ -196,6 +198,15 @@ public class Activity_Home extends Activity {
         }
         return bitmap;
     }
+
+    Runnable pullMovie = new Runnable() {
+
+        @Override
+        public void run() {
+            String url = 
+            HttpGet httpget = new HttpGet()
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
