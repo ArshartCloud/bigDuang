@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,12 +33,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.controller.ILogin;
+import com.example.controller.LoginController;
 import com.example.hope.myapplication.Activity_Home;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 /**
  * A login screen that offers login via email/password.
@@ -64,9 +86,11 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    public ILogin login = new LoginController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
@@ -161,6 +185,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+        Log.i("ars", "attemptLogin: ");
         if (mAuthTask != null) {
             return;
         }
@@ -194,6 +219,12 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
             cancel = true;
         }
 
+//debug net
+        login.Login(mEmailView.getText().toString(), mPasswordView.getText().toString());
+//        new Thread(networkTask).start();
+        //debug
+
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -209,6 +240,9 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
             //mAuthTask.execute((Void) null);
         }
     }
+
+
+
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
