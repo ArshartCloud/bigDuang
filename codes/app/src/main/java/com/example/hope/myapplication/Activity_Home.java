@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.models.Cinema;
 import com.example.models.DataController;
 import com.example.models.Movie;
 import com.example.zyh.bigduang.Activity_Info;
@@ -67,6 +69,7 @@ public class Activity_Home extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//                Movietheatre =
                 Intent intent = new Intent(Activity_Home.this, Activity_Cinemainfo.class);
                 startActivity(intent);
             }
@@ -85,6 +88,8 @@ public class Activity_Home extends Activity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // movie = balabala
+//                    DataController.GetInstance().setSelectedMovie(i);
                     Intent intent = new Intent(Activity_Home.this, Activity_Movieinfo.class);
                     startActivity(intent);
                 }
@@ -119,7 +124,7 @@ public class Activity_Home extends Activity {
         public void run() {
             List<Movie> movies = DataController.GetInstance().getMovies();
             String baseURL = "http://115.28.84.73:8080/BigDuang/img/";
-            for (int i = 0; i < movies.size(); ++i) {
+            for (int i = 0; i < movies.size() && i < mImageViews.size(); ++i) {
                 final Bitmap bitmap = getHttpBitmap(baseURL + movies.get(i).getImgName());
 
                 handler.obtainMessage(i,bitmap).sendToTarget();
@@ -128,7 +133,6 @@ public class Activity_Home extends Activity {
 
         }
     };
-
 
     public static Bitmap getHttpBitmap(String url) {
         URL myFileUrl = null;
@@ -166,14 +170,29 @@ public class Activity_Home extends Activity {
                 HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
                 result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
                 JSONObject jso = new JSONObject(result);
-                JSONArray jarr =  jso.getJSONArray("movies");
-                for (int i = 0; i < jarr.length(); ++i) {
-                    JSONObject jo = jarr.getJSONObject(i);
+                JSONArray mArr =  jso.getJSONArray("movies");
+                JSONArray cArr = jso.getJSONArray("cinema");
+
+                DataController.GetInstance().getMovies().clear();
+                for (int i = 0; i < mArr.length(); ++i) {
+
+                    JSONObject jo = mArr.getJSONObject(i);
                     Movie m = new Movie();
                     m.setId(jo.getInt("id"));
                     m.setName(jo.getString("name"));
                     m.setImgName(jo.getString("img"));
                     DataController.GetInstance().getMovies().add(m);
+                }
+                DataController.GetInstance().getMovies().clear();
+                for (int i = 0; i < cArr.length(); ++i) {
+
+                    JSONObject jo = cArr.getJSONObject(i);
+                    Cinema c = new Cinema();
+                    c.setId(jo.getInt("id"));
+                    c.setName(jo.getString("name"));
+                    c.setCity(jo.getString("city"));
+                    c.setAddress(jo.getString("address"));
+                    DataController.GetInstance().getCinemas().add(c);
                 }
                 new Thread(pullImage).start();
             } catch (Exception e) {
