@@ -4,6 +4,7 @@ package com.example.hope.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,7 +12,17 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.models.Cinema;
+import com.example.models.DataController;
+import com.example.models.Movie;
 import com.example.zyh.bigduang.R;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +55,53 @@ public class Activity_Movieinfo extends Activity {
             }
         });
 
+
+
     }
+
+
+
+    Runnable pullMovie = new Runnable() {
+
+        @Override
+        public void run() {
+            String baseURL = "http://115.28.84.73:8080/BigDuang/Cinema";
+            String result = "null";
+            String TAG = "pullCinema";
+            Log.i(TAG, "run: ");
+            try{
+                HttpGet httpGet = new HttpGet(baseURL+DataController.GetInstance().getSelectedMovie().getId());
+                HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
+                result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
+                JSONObject jso = new JSONObject(result);
+                JSONArray mArr =  jso.getJSONArray("movies");
+                JSONArray cArr = jso.getJSONArray("cinema");
+                DataController.GetInstance().getMovies().clear();
+                for (int i = 0; i < mArr.length(); ++i) {
+
+                    JSONObject jo = mArr.getJSONObject(i);
+                    Movie m = new Movie();
+                    m.setId(jo.getInt("id"));
+                    m.setName(jo.getString("name"));
+                    m.setImgName(jo.getString("img"));
+                    DataController.GetInstance().getMovies().add(m);
+                }
+                DataController.GetInstance().getMovies().clear();
+                for (int i = 0; i < cArr.length(); ++i) {
+
+                    JSONObject jo = cArr.getJSONObject(i);
+                    Cinema c = new Cinema();
+                    c.setId(jo.getInt("id"));
+                    c.setName(jo.getString("name"));
+                    c.setCity(jo.getString("city"));
+                    c.setAddress(jo.getString("address"));
+                    DataController.GetInstance().getCinemas().add(c);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

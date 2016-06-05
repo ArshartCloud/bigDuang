@@ -45,4 +45,20 @@ public class DataController {
     public void setCinemas(List<Cinema> cinemas) {
         this.cinemas = cinemas;
     }
+
+    public Movie getSelectedMovie() {
+        return selectedMovie;
+    }
+
+    public void setSelectedMovie(Movie selectedMovie) {
+        this.selectedMovie = selectedMovie;
+    }
+
+    public Cinema getSelectedCinema() {
+        return selectedCinema;
+    }
+
+    public void setSelectedCinema(Cinema selectedCinema) {
+        this.selectedCinema = selectedCinema;
+    }
 }

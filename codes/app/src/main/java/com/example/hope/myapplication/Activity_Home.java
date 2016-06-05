@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,6 +69,7 @@ public class Activity_Home extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//                Movietheatre =
                 Intent intent = new Intent(Activity_Home.this, Activity_Cinemainfo.class);
                 startActivity(intent);
             }
@@ -86,6 +88,8 @@ public class Activity_Home extends Activity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // movie = balabala
+//                    DataController.GetInstance().setSelectedMovie(i);
                     Intent intent = new Intent(Activity_Home.this, Activity_Movieinfo.class);
                     startActivity(intent);
                 }
@@ -168,6 +172,7 @@ public class Activity_Home extends Activity {
                 JSONObject jso = new JSONObject(result);
                 JSONArray mArr =  jso.getJSONArray("movies");
                 JSONArray cArr = jso.getJSONArray("cinema");
+
                 DataController.GetInstance().getMovies().clear();
                 for (int i = 0; i < mArr.length(); ++i) {
 
