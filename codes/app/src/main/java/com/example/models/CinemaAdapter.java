@@ -18,6 +18,8 @@ import java.util.List;
 /**
  * Created by lenovo on 2016/6/5 0005.
  */
+//TODO
+    // replace theaterAdapter
 public class CinemaAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Context context;
