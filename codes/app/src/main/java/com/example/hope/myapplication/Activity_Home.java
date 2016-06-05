@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.models.Cinema;
+import com.example.models.CinemaAdapter;
 import com.example.models.DataController;
 import com.example.models.Movie;
 import com.example.zyh.bigduang.R;
@@ -28,6 +30,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -36,32 +39,29 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Activity_Home extends Activity {
     private ListView listView;
     private ImageView mImageView;
+    private List<Cinema> list;
     ViewGroup group;
     private List<ImageView> mImageViews;
+    CinemaAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        List<Cinema> list = new ArrayList<Cinema>(); // 获取数据
 
-        // 影院信息
-        for (int i = 0; i < 5; i++) {
-            Cinema test = new Cinema();
-            test.setcinemaName("金逸影城");
-            test.setaddress("番禺区");
-            test.setcity("广州");
-            list.add(test);
-        }
-        CinemaAdapter adapter = new CinemaAdapter(this, list);
+        list = DataController.GetInstance().getCinemas();
+
+        adapter = new CinemaAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//                Movietheatre =
+                DataController.GetInstance().setSelectedCinema(list.get(arg2));
                 Intent intent = new Intent(Activity_Home.this, Activity_Cinemainfo.class);
                 startActivity(intent);
             }
@@ -70,12 +70,10 @@ public class Activity_Home extends Activity {
         // 电影信息
         group = (ViewGroup) findViewById(R.id.addlayout);
         mImageViews = new ArrayList<>();
-
         for (int i = 0; i < 5; i++) {
             final ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            imageView.setImageResource(R.drawable.bird);
-
+//            imageView.setImageResource(R.drawable.bird);
             imageView.setPadding(20,20,20,20);
             //final int hh = i;
             final int index = i;
@@ -83,7 +81,8 @@ public class Activity_Home extends Activity {
                 @Override
                 public void onClick(View v) {
                     Log.i("onclik", String.valueOf(index));
-//                  DataController.GetInstance().setSelectedMovie(i);
+                    List<Movie> ml = DataController.GetInstance().getMovies();
+                    DataController.GetInstance().setSelectedMovie(ml.get(index));
                     Intent intent = new Intent(Activity_Home.this, Activity_Movieinfo.class);
                     startActivity(intent);
                 }
@@ -91,13 +90,7 @@ public class Activity_Home extends Activity {
             group.addView(imageView);
             mImageViews.add(imageView);
         }
-
-        // debug ars
-        // mImageView = imageView;
-
         new Thread(pullMovie).start();
-
-        //
     }
 
     Handler handler = new Handler() {
@@ -112,6 +105,19 @@ public class Activity_Home extends Activity {
         }
     };
 
+    Handler cinemaHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String val = data.getString("value");
+            // UI界面的更新等相关操作
+            String TAG = "chandler";
+            Log.i(TAG, "handleMessage: "+list.get(3).getName());
+            adapter.notifyDataSetChanged();
+        }
+    };
+
     Runnable pullImage = new Runnable() {
 
         @Override
@@ -120,7 +126,7 @@ public class Activity_Home extends Activity {
             String baseURL = "http://115.28.84.73:8080/BigDuang/img/";
             for (int i = 0; i < movies.size() && i < mImageViews.size(); ++i) {
                 final Bitmap bitmap = getHttpBitmap(baseURL + movies.get(i).getImgName());
-
+                movies.get(i).setBitmap(bitmap);
                 handler.obtainMessage(i,bitmap).sendToTarget();
             }
     //        handler.obtainMessage(1,bitmap).sendToTarget();
@@ -167,27 +173,9 @@ public class Activity_Home extends Activity {
                 JSONArray mArr =  jso.getJSONArray("movies");
                 JSONArray cArr = jso.getJSONArray("cinema");
 
-                DataController.GetInstance().getMovies().clear();
-                for (int i = 0; i < mArr.length(); ++i) {
-
-                    JSONObject jo = mArr.getJSONObject(i);
-                    Movie m = new Movie();
-                    m.setId(jo.getInt("id"));
-                    m.setName(jo.getString("name"));
-                    m.setImgName(jo.getString("img"));
-                    DataController.GetInstance().getMovies().add(m);
-                }
-                DataController.GetInstance().getMovies().clear();
-                for (int i = 0; i < cArr.length(); ++i) {
-
-                    JSONObject jo = cArr.getJSONObject(i);
-                    Cinema c = new Cinema();
-                    c.setcinemaId(jo.getInt("id"));
-                    c.setcinemaName(jo.getString("name"));
-                    c.setcity(jo.getString("city"));
-                    c.setaddress(jo.getString("address"));
-                    DataController.GetInstance().getCinemas().add(c);
-                }
+                DataController.GetInstance().insertCinemaFromJSON(cArr);
+                DataController.GetInstance().insertMovieFromJSON(mArr);
+                cinemaHandler.obtainMessage().sendToTarget();
                 new Thread(pullImage).start();
             } catch (Exception e) {
                 e.printStackTrace();
