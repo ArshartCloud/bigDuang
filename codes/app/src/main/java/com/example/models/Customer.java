@@ -4,7 +4,6 @@ package com.example.models;
  * Created by Arshart on 2016/6/4 0004.
  */
 public class Customer {
-    private int id;
     private String name;
     private String password;
 
@@ -14,14 +13,6 @@ public class Customer {
 
     public String getName() {
         return name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setName(String name) {

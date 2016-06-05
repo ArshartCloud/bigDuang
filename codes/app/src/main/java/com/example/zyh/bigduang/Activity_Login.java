@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.hope.myapplication.Activity_Home;
+import com.example.models.DataController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -245,6 +246,8 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
                 JSONObject result = new JSONObject(val);
                 boolean login = result.getBoolean("loginAble");
                 if (login) {
+                    DataController.GetInstance().getCustomer().setName(mEmailView.getText().toString());
+
                     showProgress(true);
 
                     Intent intent = new Intent(Activity_Login.this, Activity_Home.class);
