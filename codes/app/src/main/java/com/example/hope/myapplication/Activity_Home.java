@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.models.DataController;
+import com.example.models.Movie;
 import com.example.zyh.bigduang.Activity_Info;
 import com.example.zyh.bigduang.R;
 
@@ -27,6 +29,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -72,10 +75,11 @@ public class Activity_Home extends Activity {
         // 电影信息
         group = (ViewGroup) findViewById(R.id.addlayout);
         mImageViews = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             imageView.setImageResource(R.drawable.bird);
+            
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +93,7 @@ public class Activity_Home extends Activity {
 
         // debug ars
         // mImageView = imageView;
-        new Thread(networkTask).start();
+//        new Thread(networkTask).start();
         new Thread(pullMovie).start();
 
         //
@@ -101,33 +105,21 @@ public class Activity_Home extends Activity {
             super.handleMessage(msg);
             Bundle data = msg.getData();
             String val = data.getString("value");
-//            Log.i("mylog", "请求结果为-->" + val);
-            // TODO
             // UI界面的更新等相关操作
 //            mEmailView.setError(val);
             mImageViews.get(msg.what).setImageBitmap((Bitmap) msg.obj);
         }
     };
 
-    Runnable networkTask = new Runnable() {
+    Runnable pullImage = new Runnable() {
 
         @Override
         public void run() {
-            List<String> urls = new ArrayList<>();
-            urls.add("http://115.28.84.73:8080/BigDuang/img/second");
-            urls.add("http://115.28.84.73:8080/BigDuang/img/first");
-            urls.add("http://115.28.84.73:8080/BigDuang/img/forth");
-            for (int i = 0; i < 3; ++i) {
-                final Bitmap bitmap =
-                        getHttpBitmap(urls.get(i));
-//从网上取图片
-//                mImageViews.get(i).post(new Runnable() {//另外一种更简洁的发送消息给ui线程的方法。
-//
-//                    @Override
-//                    public void run() {//run()方法会在ui线程执行
-//                         mImageViews.get(i).setImageBitmap(bitmap);
-//                    }
-//                });
+            List<Movie> movies = DataController.GetInstance().getMovies();
+            String baseURL = "http://115.28.84.73:8080/BigDuang/img/";
+            for (int i = 0; i < movies.size(); ++i) {
+                final Bitmap bitmap = getHttpBitmap(baseURL + movies.get(i).getImgName());
+
                 handler.obtainMessage(i,bitmap).sendToTarget();
             }
     //        handler.obtainMessage(1,bitmap).sendToTarget();
@@ -171,7 +163,17 @@ public class Activity_Home extends Activity {
                 HttpGet httpGet = new HttpGet(url);
                 HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
                 result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
-                Log.i(TAG, result);
+                JSONObject jso = new JSONObject(result);
+                JSONArray jarr =  jso.getJSONArray("movies");
+                for (int i = 0; i < jarr.length(); ++i) {
+                    JSONObject jo = jarr.getJSONObject(i);
+                    Movie m = new Movie();
+                    m.setId(jo.getInt("id"));
+                    m.setName(jo.getString("name"));
+                    m.setImgName(jo.getString("img"));
+                    DataController.GetInstance().getMovies().add(m);
+                }
+                new Thread(pullImage).start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
