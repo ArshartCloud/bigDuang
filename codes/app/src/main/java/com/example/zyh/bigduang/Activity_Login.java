@@ -236,7 +236,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
             super.handleMessage(msg);
             Bundle data = msg.getData();
             String val = data.getString("value");
-            Log.i("mylog", "请求结果为-->" + val);
+            Log.i("login", "请求结果为-->" + val);
             // TODO
             // UI界面的更新等相关操作
             String TAG = "json";

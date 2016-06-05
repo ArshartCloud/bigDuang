@@ -141,7 +141,7 @@ public class Activity_Home extends Activity {
             super.handleMessage(msg);
             Bundle data = msg.getData();
             String val = data.getString("value");
-            Log.i("mylog", "请求结果为-->" + val);
+//            Log.i("mylog", "请求结果为-->" + val);
             // TODO
             // UI界面的更新等相关操作
 //            mEmailView.setError(val);
@@ -204,12 +204,14 @@ public class Activity_Home extends Activity {
         @Override
         public void run() {
             String url = "http://115.28.84.73:8080/BigDuang/list";
-            String result = "";
+            String result = "null";
+            String TAG = "pullmovie";
+            Log.i(TAG, "run: ");
             try{
-                HttpGet httpGet = new HttpGet();
+                HttpGet httpGet = new HttpGet(url);
                 HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
                 result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
-                Log.i("dfs", result);
+                Log.i(TAG, result);
             } catch (Exception e) {
                 e.printStackTrace();
             }
