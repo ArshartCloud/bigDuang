@@ -3,6 +3,8 @@ package com.example.hope.myapplication;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +15,17 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.models.DataController;
 import com.example.zyh.bigduang.Activity_Deal;
 import com.example.zyh.bigduang.Activity_Pay;
 import com.example.zyh.bigduang.R;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Activity_Seat extends AppCompatActivity {
 
@@ -23,6 +33,10 @@ public class Activity_Seat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.seat);
+        DataController.GetInstance().getMovies().clear();
+        DataController.GetInstance().getShowtimes().clear();
+        DataController.GetInstance().getCinemas().clear();
+
         RelativeLayout llayout = (RelativeLayout)findViewById(R.id.mylinear);
 
         int column = 6;
@@ -48,6 +62,7 @@ public class Activity_Seat extends AppCompatActivity {
         bgopay.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View v) {
+                                          DataController.GetInstance().setSelectedSeat(1);
                                           Intent intent = new Intent(Activity_Seat.this, Activity_Pay.class);
                                           startActivity(intent);
                                       }
@@ -68,6 +83,39 @@ public class Activity_Seat extends AppCompatActivity {
         //bgopay.setPaddingRelative(0, 80, 0, 0);
         llayout.addView(layout);
         llayout.addView(bgopay);
+
+//        new Thread(pullSeat).start();
     }
+//    Handler handler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            adapter.notifyDataSetChanged();
+//        }
+//    };
+
+
+    Runnable pullSeat = new Runnable() {
+
+        @Override
+        public void run() {
+            String baseURL = "http://115.28.84.73:8080/BigDuang/seat/";
+            String result = "null";
+            String TAG = "pullSeat";
+            int movieID = DataController.GetInstance().getSelectedMovie().getId();
+            try{
+                String url = baseURL + String.valueOf(movieID);
+                HttpGet httpGet = new HttpGet(url);
+                HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
+                result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
+                JSONObject jso = new JSONObject(result);
+                JSONArray jArr = jso.getJSONArray("cinemas");
+                DataController.GetInstance().insertCinemaFromJSON(jArr);
+//                handler.obtainMessage(1).sendToTarget();;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
 }

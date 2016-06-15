@@ -1,9 +1,13 @@
 package com.example.models;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.security.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,8 +18,11 @@ public class DataController {
     private Customer customer = new Customer();
     private List<Movie> movies = new ArrayList<>();
     private List<Cinema> cinemas = new ArrayList<>();
+    private List<Showtime> showtimes = new ArrayList<>();
     private Movie selectedMovie;
     private Cinema selectedCinema;
+    private Showtime selectedShowtime;
+    private int selectedSeat;
 
     public static DataController GetInstance ()
     {
@@ -65,6 +72,30 @@ public class DataController {
         this.selectedCinema = selectedCinema;
     }
 
+    public int getSelectedSeat() {
+        return selectedSeat;
+    }
+
+    public void setSelectedSeat(int selectedSeat) {
+        this.selectedSeat = selectedSeat;
+    }
+
+    public List<Showtime> getShowtimes() {
+        return showtimes;
+    }
+
+    public void setShowtimes(List<Showtime> showtimes) {
+        this.showtimes = showtimes;
+    }
+
+    public Showtime getSelectedShowtime() {
+        return selectedShowtime;
+    }
+
+    public void setSelectedShowtime(Showtime selectedShowtime) {
+        this.selectedShowtime = selectedShowtime;
+    }
+
     public void insertCinemaFromJSON(JSONArray jArr) {
         try{
             DataController.GetInstance().getCinemas().clear();
@@ -97,7 +128,25 @@ public class DataController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void insertShowtimeFromJSON(JSONArray jArr) {
+        try{
+            DataController.GetInstance().getShowtimes().clear();
+            for (int i = 0; i < jArr.length(); ++i) {
+                JSONObject jo = jArr.getJSONObject(i);
+                Showtime s = new Showtime();
+                s.setId(jo.getInt("id"));
+                s.setPrice(jo.getDouble("price"));
+                JSONObject time = jo.getJSONObject("time");
+                Date d = new Date(time.getLong("time"));
+                s.setDate(d);
+//                Log.i("234",d.toString());
+                DataController.GetInstance().getShowtimes().add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -29,7 +29,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="百鸟朝凤\n song of the phoenix"
             android:layout_marginLeft="50px"
             android:id="@+id/textView11"
             android:layout_alignTop="@+id/imageView2"
@@ -40,7 +39,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/grade"
-            android:text="8.9分"
             android:textColor="#ea7c40"
             android:paddingTop="10px"
             android:layout_alignLeft="@+id/textView11"
@@ -49,7 +47,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="历史，音乐，剧情\n中国大陆/108分钟\n2016-05-06大陆上映"
             android:id="@+id/textView12"
             android:layout_marginTop="20px"
             android:layout_below="@+id/grade"
