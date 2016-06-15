@@ -19,19 +19,23 @@
         <TextView
             android:text="百鸟朝凤"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/select_movie"/>
         <TextView
             android:text="2016-5-19 周四 12:50"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/select_showtime" />
         <TextView
             android:text="金逸珠江国际影城（大学城店）"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/select_cinema" />
         <TextView
             android:text="4号厅 3排3座 6排5座"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/select_seat"/>
 
         <LinearLayout
             android:layout_marginTop="20dp"

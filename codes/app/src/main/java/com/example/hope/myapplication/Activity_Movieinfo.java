@@ -35,44 +35,42 @@ import java.util.List;
 public class Activity_Movieinfo extends Activity {
     private ListView listView;
     private CinemaAdapter adapter;
+    private  List<Cinema> list;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movieinfo);
-        List<Cinema> list = DataController.GetInstance().getCinemas(); // 获取数据
-        // 电影信息
+        DataController.GetInstance().getMovies().clear();
+        DataController.GetInstance().getShowtimes().clear();
+        DataController.GetInstance().getCinemas().clear();
+
+        // cinema Info
         ImageView movieImage = (ImageView)findViewById(R.id.imageView2);
         TextView movieName = (TextView)findViewById(R.id.textView11);
-        TextView grade = (TextView)findViewById(R.id.grade);
-        TextView describe = (TextView)findViewById(R.id.grade);
-
         Movie movie = DataController.GetInstance().getSelectedMovie();
         movieImage.setImageBitmap(movie.getBitmap());
         movieName.setText(movie.getName());
 
-
-        // 影院信息
+        // movie Info
+        list = DataController.GetInstance().getCinemas();
         adapter = new CinemaAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView2);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                DataController.GetInstance().setSelectedCinema(list.get(arg2));
                 Intent intent = new Intent(Activity_Movieinfo.this, Activity_Cinemainfo.class);
                 startActivity(intent);
             }
         });
 
         new Thread(pullCinema).start();
-
     }
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Bundle data = msg.getData();
-            String val = data.getString("value");
-            String TAG = "chandler";
             adapter.notifyDataSetChanged();
         }
     };
@@ -82,23 +80,19 @@ public class Activity_Movieinfo extends Activity {
 
     @Override
         public void run() {
-            String baseurl = "http://115.28.84.73:8080/BigDuang/cinema/";
+            String baseURL = "http://115.28.84.73:8080/BigDuang/cinema/";
             String result = "null";
             String TAG = "pullCinema";
             int movieID = DataController.GetInstance().getSelectedMovie().getId();
-            Log.i(TAG, "run: ");
             try{
-                String url = baseurl + String.valueOf(movieID);
-                Log.i(TAG, url);
+                String url = baseURL + String.valueOf(movieID);
                 HttpGet httpGet = new HttpGet(url);
                 HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
                 result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
-                Log.i(TAG, result);
                 JSONObject jso = new JSONObject(result);
                 JSONArray jArr = jso.getJSONArray("cinemas");
-                Log.i(TAG, jArr.toString());
                 DataController.GetInstance().insertCinemaFromJSON(jArr);
-                Log.i(TAG, "run: ");
+                handler.obtainMessage(1).sendToTarget();;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -125,5 +119,13 @@ public class Activity_Movieinfo extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // forbid back
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Activity_Movieinfo.this, Activity_Home.class);
+        startActivity(intent);
+        return;
     }
 }

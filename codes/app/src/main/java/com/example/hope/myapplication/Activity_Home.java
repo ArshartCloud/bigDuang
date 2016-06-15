@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +41,6 @@ import java.util.List;
 
 public class Activity_Home extends Activity {
     private ListView listView;
-    private ImageView mImageView;
     private List<Cinema> list;
     ViewGroup group;
     private List<ImageView> mImageViews;
@@ -52,9 +50,11 @@ public class Activity_Home extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        DataController.GetInstance().getMovies().clear();
+        DataController.GetInstance().getShowtimes().clear();
+        DataController.GetInstance().getCinemas().clear();
 
         list = DataController.GetInstance().getCinemas();
-
         adapter = new CinemaAdapter(this, list);
         listView = (ListView)findViewById(R.id.listView);
         listView.setAdapter(adapter);
@@ -67,20 +67,17 @@ public class Activity_Home extends Activity {
             }
         });
 
-        // 电影信息
+        // movie Information
         group = (ViewGroup) findViewById(R.id.addlayout);
         mImageViews = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             final ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//            imageView.setImageResource(R.drawable.bird);
             imageView.setPadding(20,20,20,20);
-            //final int hh = i;
             final int index = i;
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i("onclik", String.valueOf(index));
                     List<Movie> ml = DataController.GetInstance().getMovies();
                     DataController.GetInstance().setSelectedMovie(ml.get(index));
                     Intent intent = new Intent(Activity_Home.this, Activity_Movieinfo.class);
@@ -93,15 +90,30 @@ public class Activity_Home extends Activity {
         new Thread(pullMovie).start();
     }
 
-    Handler handler = new Handler() {
+
+    Runnable pullMovie = new Runnable() {
+
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Bundle data = msg.getData();
-            String val = data.getString("value");
-            // UI界面的更新等相关操作
-//            mEmailView.setError(val);
-            mImageViews.get(msg.what).setImageBitmap((Bitmap) msg.obj);
+        public void run() {
+            String url = "http://115.28.84.73:8080/BigDuang/list";
+            String result;
+            String TAG = "pullmovie";
+            try{
+                HttpGet httpGet = new HttpGet(url);
+                HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
+                result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
+                JSONObject jso = new JSONObject(result);
+                JSONArray mArr =  jso.getJSONArray("movies");
+                JSONArray cArr = jso.getJSONArray("cinema");
+                // transfer data
+                DataController.GetInstance().insertCinemaFromJSON(cArr);
+                DataController.GetInstance().insertMovieFromJSON(mArr);
+                // update to UI
+                cinemaHandler.obtainMessage().sendToTarget();
+                new Thread(pullImage).start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -109,11 +121,6 @@ public class Activity_Home extends Activity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Bundle data = msg.getData();
-            String val = data.getString("value");
-            // UI界面的更新等相关操作
-            String TAG = "chandler";
-            Log.i(TAG, "handleMessage: "+list.get(3).getName());
             adapter.notifyDataSetChanged();
         }
     };
@@ -127,10 +134,17 @@ public class Activity_Home extends Activity {
             for (int i = 0; i < movies.size() && i < mImageViews.size(); ++i) {
                 final Bitmap bitmap = getHttpBitmap(baseURL + movies.get(i).getImgName());
                 movies.get(i).setBitmap(bitmap);
-                handler.obtainMessage(i,bitmap).sendToTarget();
+                ImageHandler.obtainMessage(i,bitmap).sendToTarget();
             }
-    //        handler.obtainMessage(1,bitmap).sendToTarget();
+        }
+    };
 
+    Handler ImageHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            mImageViews.get(msg.what).setImageBitmap((Bitmap) msg.obj);
         }
     };
 
@@ -138,7 +152,6 @@ public class Activity_Home extends Activity {
         URL myFileUrl = null;
         Bitmap bitmap = null;
         try {
-            Log.d("network", url);
             myFileUrl = new URL(url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -156,32 +169,6 @@ public class Activity_Home extends Activity {
         }
         return bitmap;
     }
-
-    Runnable pullMovie = new Runnable() {
-
-        @Override
-        public void run() {
-            String url = "http://115.28.84.73:8080/BigDuang/list";
-            String result = "null";
-            String TAG = "pullmovie";
-            Log.i(TAG, "run: ");
-            try{
-                HttpGet httpGet = new HttpGet(url);
-                HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
-                result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
-                JSONObject jso = new JSONObject(result);
-                JSONArray mArr =  jso.getJSONArray("movies");
-                JSONArray cArr = jso.getJSONArray("cinema");
-
-                DataController.GetInstance().insertCinemaFromJSON(cArr);
-                DataController.GetInstance().insertMovieFromJSON(mArr);
-                cinemaHandler.obtainMessage().sendToTarget();
-                new Thread(pullImage).start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
