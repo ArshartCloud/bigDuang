@@ -73,7 +73,7 @@ public class Activity_Home extends Activity {
         for (int i = 0; i < 10; i++) {
             final ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            imageView.setPadding(20,20,20,20);
+            imageView.setPadding(5,5,5,5);
             final int index = i;
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override

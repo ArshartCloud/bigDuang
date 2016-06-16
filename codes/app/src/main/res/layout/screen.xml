@@ -12,14 +12,12 @@
         android:layout_margin="50px"></TextView>
 
     <!--<TextView android:layout_width="wrap_content"-->
+        <!--android:id="@+id/tv_description"-->
         <!--android:layout_marginLeft="40px"-->
-        <!--android:layout_height="wrap_content" -->
+        <!--android:layout_height="wrap_content"-->
         <!--android:text="英语3D"-->
-        <!--android:id="@+id/tv_description" -->
         <!--android:layout_centerVertical="true"-->
         <!--android:layout_toRightOf="@+id/tv_name" ></TextView>-->
-
-
 
 
     <!--<Button android:id="@+id/button1"-->
@@ -33,12 +31,14 @@
     <!--</Button>-->
 
 
+
     <TextView android:layout_width="wrap_content"
         android:layout_marginRight="40px"
         android:textColor="#7eeac6"
         android:layout_height="wrap_content" android:text="$41"
         android:id="@+id/tv_price" android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/tv_name"></TextView>
+        android:layout_toRightOf="@+id/tv_name">
+    </TextView>
 
     <View
         android:layout_width="match_parent"

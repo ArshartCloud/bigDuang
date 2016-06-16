@@ -6,6 +6,20 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="影院信息"
+        android:layout_marginTop="5px"
+        android:textColor="#ffffff"
+        android:background="#d9090a"
+        android:layout_marginBottom="5px"
+        android:id="@+id/tmp1"
+        android:gravity="center"
+        android:layout_gravity="center" />
+
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -51,17 +65,16 @@
             android:layout_height="match_parent"></LinearLayout>
     </HorizontalScrollView>
 
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:layout_marginTop="10px"
         android:background="#696969" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
 
         <!--<TextView-->
@@ -87,13 +100,26 @@
             <!--android:text="后天5月21日"-->
             <!--android:padding="10px"-->
             <!--android:id="@+id/textView6" />-->
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
-    <View
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_marginTop="10px"
-        android:background="#696969" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="今日场次"
+        android:layout_marginTop="5px"
+        android:textColor="#ffffff"
+        android:background="#d9090a"
+        android:layout_marginBottom="5px"
+        android:id="@+id/tmp"
+        android:gravity="center"
+        android:layout_gravity="center" />
+
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dip"-->
+        <!--android:layout_marginTop="10px"-->
+        <!--android:background="#696969" />-->
 
     <ListView
         android:layout_width="match_parent"
