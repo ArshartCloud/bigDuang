@@ -87,7 +87,7 @@ public class Activity_Pay extends Activity {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            Log.i("Activity", millisUntilFinished + "");
+//            Log.i("Activity", millisUntilFinished + "");
             tv.setText("倒计时(" + millisUntilFinished / 1000 + ")...");
         }
     }

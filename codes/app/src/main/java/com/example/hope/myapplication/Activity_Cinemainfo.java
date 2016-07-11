@@ -72,7 +72,7 @@ public class Activity_Cinemainfo extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//                DataController.GetInstance().setSelectedChooseItem(list.get(arg2));
+                DataController.GetInstance().setSelectedShowtime(list.get(arg2));
                 Intent intent = new Intent(Activity_Cinemainfo.this, Activity_Seat.class);
                 startActivity(intent);
             }
@@ -90,6 +90,7 @@ public class Activity_Cinemainfo extends Activity {
                 @Override
                 public void onClick(View v) {
                     List<Movie> ml = DataController.GetInstance().getMovies();
+                    Log.i("233","6666");
                     DataController.GetInstance().setSelectedMovie(ml.get(index));
                     new Thread(pullShowtime).start();
                 }
@@ -113,14 +114,12 @@ public class Activity_Cinemainfo extends Activity {
                 HttpGet httpGet = new HttpGet(url);
                 HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
                 result = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
-                Log.i(TAG, result);
                 JSONObject jso = new JSONObject(result);
                 JSONArray jArr = jso.getJSONArray("movies");
-//                Log.i(TAG, jArr.toString());
                 DataController.GetInstance().insertMovieFromJSON(jArr);
                 new Thread(pullImage).start();
                 Movie selectedMovie = DataController.GetInstance().getSelectedMovie();
-                if (selectedMovie == null || !DataController.GetInstance().getMovies().contains(selectedMovie)) {
+                if (selectedMovie == null ) {//|| !DataController.GetInstance().getMovies().contains(selectedMovie)
                     DataController.GetInstance().setSelectedMovie(DataController.GetInstance().getMovies().get(0));
                 }
                 new Thread(pullShowtime).start();

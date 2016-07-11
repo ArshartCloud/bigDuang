@@ -61,7 +61,7 @@ public class DataController {
     }
 
     public void setSelectedMovie(Movie selectedMovie) {
-        this.selectedMovie = selectedMovie;
+        this.selectedMovie = selectedMovie;Log.i("444",  selectedMovie.getName());
     }
 
     public Cinema getSelectedCinema() {

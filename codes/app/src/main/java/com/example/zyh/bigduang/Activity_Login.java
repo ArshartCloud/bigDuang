@@ -169,7 +169,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        Log.i("ars", "attemptLogin: ");
+//        Log.i("ars", "attemptLogin: ");
         if (mAuthTask != null) {
             return;
         }
@@ -224,7 +224,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
             super.handleMessage(msg);
             Bundle data = msg.getData();
             String val = data.getString("value");
-            Log.i("login", "请求结果为-->" + val);
+//            Log.i("login", "请求结果为-->" + val);
             // TODO
             // UI界面的更新等相关操作
             String TAG = "json";
@@ -242,7 +242,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
                 }
             }
             catch (Exception e) {
-                Log.i(TAG, e.toString());
+//                Log.i(TAG, e.toString());
             }
         }
     };
@@ -267,7 +267,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderCallbacks
                 HttpResponse httpResponse = new DefaultHttpClient().execute(request);
                 // 得到应答的字符串，这也是一个 JSON 格式保存的数据
                 retSrc = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
-                Log.i(TAG, retSrc);
+//                Log.i(TAG, retSrc);
             }
             catch (Exception e)
             {

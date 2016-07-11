@@ -31,7 +31,7 @@ public class Activity_Deal extends AppCompatActivity {
 
         Movie movie = DataController.GetInstance().getSelectedMovie();
         Cinema cinema = DataController.GetInstance().getSelectedCinema();
-//         movie = DataController.GetInstance().getSelectedMovie();
+
         int seat = DataController.GetInstance().getSelectedSeat();
         movieView.setText(movie.getName());
         cinemaView.setText(cinema.getName());
